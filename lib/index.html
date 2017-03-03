@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AUDIO REACTIVE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="MONOGRIDAudioReactive.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="assets/fontello/fontello.css">
+    <link rel="stylesheet" href="assets/font/stylesheet.css">
+    <style type="text/css">
+      body,
+      html {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          background-color: #000000;
+          overflow: hidden;
+          color: #ffffff;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;    
+          font-family: 'proxima_nova_rgregular', sans-serif;      
+      }
+      .threeCanvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+      }
+      li,
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      a,
+      a:visited,
+      a:active,
+      a:hover {
+        color: #ffffff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .control-btn:hover  {
+        background-color: rgba(255,255,255,1);
+        color: #000000;
+      }
+      .control-btn  {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        margin-left: -20px;
+        cursor: pointer;
+        background-color: rgba(255,255,255,0.2);
+        padding-top: 12px;
+        padding-left: 9px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        box-sizing: border-box;
+        -webkit-transition: all .5s;
+        -ms-transition: all .5s;
+        -moz-transition: all .5s;
+        transition: all .5s;
+      }
+
+      .cta-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        text-align: center;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        /*backface-visibility: hidden;*/
+        margin-top: -20px;
+      }
+
+      .cta-container img {
+        display: block;
+      }
+
+      .cta-container .cta:hover {
+        color: rgba(255,255,255,.6);
+      }
+
+      .cta-container .cta {
+        cursor: pointer;
+        display: inline-block;
+
+        -webkit-transition: color .5s;
+        -ms-transition: color .5s;
+        -moz-transition: color .5s;
+        transition: color .5s;
+        opacity: 0;  
+        display: none;
+        position: absolute;
+        bottom: -60px;
+        width: 100%;
+        box-sizing: border-box;
+
+        width: 64px;
+        height: 64px;
+        /*backface-visibility: hidden;*/
+      }
+
+      .cta-container .cta img {
+        width: 100%;
+        height: auto;
+      }
+
+      #pauseBtn {
+        display: none !important;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <canvas id="threeCanvas"></canvas>
+    <i id="playBtn" class="control-btn icon-play"></i>
+    <i id="pauseBtn" class="control-btn icon-pause"></i>
+    <i id="restartBtn" class="control-btn icon-to-start"></i>
+    <div id="ctaContainer" class="cta-container">
+      <div id="startExperience" class="cta">
+        <img src="assets/images/play.png">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var canvas = document.getElementById('threeCanvas');
+      var playBtn = document.getElementById('playBtn');
+      var pauseBtn = document.getElementById('pauseBtn');
+      var restartBtn = document.getElementById('restartBtn');
+      var startExperience = document.getElementById('startExperience');
+      var ctaContainer = document.getElementById('ctaContainer');
+
+      var visualization = new MONOGRIDAudioReactive();
+
+      visualization.init({
+        element: canvas,
+        playButton: playBtn,
+        pauseButton: pauseBtn,
+        restartButton: restartBtn,
+        startExperienceButton: startExperience
+      });
+      // visualization.showStats();
+      // visualization.hideStats();
+
+      window.addEventListener('resize', function (event) {
+        // visualization.resize(window.innerWidth / 2, window.innerHeight / 2);
+        visualization.resize(window.innerWidth, window.innerHeight);
+      });
+      // visualization.resize(window.innerWidth / 2, window.innerHeight / 2);
+      visualization.resize(window.innerWidth, window.innerHeight);
+
+      startExperience.addEventListener('click', function () {
+        visualization.startExperience();
+        TweenMax.to(startExperience, 1, {opacity: 0, display: 'none'});
+        TweenMax.to(ctaContainer, 1, {opacity: 0, display: 'none', delay: 3});
+        // ctaContainer.style.display = 'none';
+      });
+    </script>
+  </body>
+</html>
