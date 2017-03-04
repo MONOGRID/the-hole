@@ -104,8 +104,6 @@ export default class MONOGRIDAudioReactive {
     this._element = params.element;
     this._destroyed = false;
 
-    this.resize();
-
     this._currentScene = 0;
     this._params = {
       wireframe: false,
@@ -159,7 +157,7 @@ export default class MONOGRIDAudioReactive {
     this._renderer.toneMapping = LinearToneMapping;
 
     this._renderer.setClearColor(0x000000, 1);
-    this._renderer.setPixelRatio(window.devicePixelRatio);
+    this._renderer.setPixelRatio(1);
     this._renderer.setSize(this._viewportWidth, this._viewportHeight);
 
     this._camera = new PerspectiveCamera(35, this._viewportWidth / this._viewportHeight, 1, 25000);
@@ -204,6 +202,19 @@ export default class MONOGRIDAudioReactive {
     this._playButton.style.display = 'none';
 
     for (let sourceName in this._soundSources) {
+      this._soundSources[sourceName].analyser = analyser(this._soundSources[sourceName]);
+
+      this._loadedAudioTracks += 1;
+      this._maxFreq = 0;
+
+      if (this._loadedAudioTracks === this._audioComponents.length) {
+        this._startTime = new Date().getTime();
+        this._pauseTime = 0;
+        this._audioReady = true;
+        this._onPauseClick();
+        TweenMax.to(this._startExperienceButton, 0.5, {opacity: 1, display: 'block'});
+      }
+
       this._soundSources[sourceName].play();
     }
   }
@@ -544,18 +555,6 @@ export default class MONOGRIDAudioReactive {
       this._soundSources[current].addEventListener('canplay', () => {
         this._soundSources[current].loaded = true;
         this._soundSources[current].volume = 1.0;
-
-        this._soundSources[current].analyser = analyser(this._soundSources[current]);
-
-        this._loadedAudioTracks += 1;
-        this._maxFreq = 0;
-        if (this._loadedAudioTracks === this._audioComponents.length) {
-          this._startTime = new Date().getTime();
-          this._pauseTime = 0;
-          this._audioReady = true;
-          this._onPauseClick();
-          TweenMax.to(this._startExperienceButton, 0.5, {opacity: 1, display: 'block'});
-        }
       });
     }
   }
