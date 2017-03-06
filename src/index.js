@@ -155,7 +155,8 @@ export default class MONOGRIDAudioReactive {
       alpha: false
     });
     this._renderer.toneMapping = LinearToneMapping;
-
+    console.log(this._element);
+    this.resize();
     this._renderer.setClearColor(0x000000, 1);
     this._renderer.setPixelRatio(1);
     this._renderer.setSize(this._viewportWidth, this._viewportHeight);
@@ -315,7 +316,6 @@ export default class MONOGRIDAudioReactive {
 
     this._initAudio();
     this._initPostProcessing();
-    this.resize();
     this._blob = this._initBlob();
 
     this._render();
@@ -887,7 +887,7 @@ export default class MONOGRIDAudioReactive {
     this._viewportHeight = h || this._element.height;
 
     if (this._renderer) {
-      this._renderer.setPixelRatio(window.devicePixelRatio);
+      this._renderer.setPixelRatio(1);
       this._renderer.setSize(this._viewportWidth, this._viewportHeight);
     }
 
